@@ -1,23 +1,51 @@
 pipeline {
-     agent { label 'linux-node1' }
 
-    tools {
-        maven 'Maven'
-       
-    }
+```
+agent { label 'linux-node1' }
 
-    stages {
+options {
+    timestamps()
+}
 
-        stage('Checkout') {
-            steps {
-                git 'https://github.com/Deepak-Sagar-007/my_maven_project.git'
-            }
-        }
+tools {
+    maven 'Maven'
+}
 
-        stage('Build') {
-            steps {
-                sh 'mvn clean install'
-            }
+stages {
+
+    stage('Start') {
+        steps {
+            echo "Build Started"
         }
     }
+
+    stage('Checkout') {
+        steps {
+            checkout scm
+        }
+    }
+
+    stage('Build') {
+        steps {
+            sh 'mvn clean install'
+        }
+    }
+
+    stage('Archive') {
+        steps {
+            archiveArtifacts artifacts: 'target/*.jar'
+        }
+    }
+}
+
+post {
+    success {
+        echo "Build SUCCESS"
+    }
+    failure {
+        echo "Build FAILED"
+    }
+}
+```
+
 }
