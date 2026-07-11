@@ -1,33 +1,50 @@
 pipeline {
 
-    agent { label 'linux-node1' }
+```
+agent { label 'linux-node1' }
 
-    tools {
-        maven 'Maven'
-    }
+tools {
+    maven 'Maven'
+}
 
-    stages {
+options {
+    timestamps()
+}
 
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
+stages {
 
-        stage('Build') {
-            steps {
-                sh 'mvn clean install'
-            }
-        }
-
-    }
-
-    post {
-        success {
-            echo "Build SUCCESS"
-        }
-        failure {
-            echo "Build FAILED"
+    stage('Checkout') {
+        steps {
+            checkout scm
         }
     }
+
+    stage('Build & Test') {
+        steps {
+            sh 'mvn clean install'
+        }
+    }
+
+    stage('Archive Artifacts') {
+        steps {
+            archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+            archiveArtifacts artifacts: 'target/surefire-reports/*.xml', allowEmptyArchive: true
+            archiveArtifacts artifacts: 'target/surefire-reports/*.txt', allowEmptyArchive: true
+        }
+    }
+}
+
+post {
+    always {
+        junit 'target/surefire-reports/*.xml'
+    }
+    success {
+        echo "Build SUCCESS"
+    }
+    failure {
+        echo "Build FAILED"
+    }
+}
+```
+
 }
