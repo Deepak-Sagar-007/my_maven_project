@@ -1,6 +1,6 @@
 pipeline {
 
-```
+
 agent { label 'linux-node1' }
 
 tools {
@@ -45,6 +45,6 @@ post {
         echo "Build FAILED"
     }
 }
-```
+
 
 }
