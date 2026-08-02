@@ -6,32 +6,51 @@ import org.junit.Test;
 public class AppTest {
 
     @Test
-    void testAddPositiveNumbers() {
+    public void testAddPositiveNumbers() {
         App app = new App();
-        assertEquals(5, app.add(2, 3));
+        int result = app.add(2, 3);
+        Assert.assertEquals(5, result);
     }
 
     @Test
-    void testAddNegativeNumbers() {
+    public void testAddNegativeNumbers() {
         App app = new App();
-        assertEquals(-5, app.add(-2, -3));
+        int result = app.add(-2, -3);
+        Assert.assertEquals(-5, result);
     }
 
     @Test
-    void testAddPositiveAndNegative() {
+    public void testAddPositiveAndNegative() {
         App app = new App();
-        assertEquals(1, app.add(3, -2));
+        int result = app.add(5, -3);
+        Assert.assertEquals(2, result);
     }
 
     @Test
-    void testAddWithZero() {
+    public void testAddWithZero() {
         App app = new App();
-        assertEquals(3, app.add(3, 0));
+        int result = app.add(5, 0);
+        Assert.assertEquals(5, result);
     }
 
     @Test
-    void testAddZeroAndZero() {
+    public void testAddZeroAndZero() {
         App app = new App();
-        assertEquals(0, app.add(0, 0));
+        int result = app.add(0, 0);
+        Assert.assertEquals(0, result);
+    }
+
+    @Test
+    public void testAddLargeNumbers() {
+        App app = new App();
+        int result = app.add(100000, 200000);
+        Assert.assertEquals(300000, result);
+    }
+
+    @Test
+    public void testAddResultNotEqual() {
+        App app = new App();
+        int result = app.add(2, 3);
+        Assert.assertNotEquals(6, result);
     }
 }
